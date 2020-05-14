@@ -12,14 +12,17 @@ class Search extends Component {
     }
 
     hanleSubmit = e => {
+        // let q = this.query.value;
         e.preventDefault();
         this.props.onSearch(myApiKey, this.query.value);
         e.currentTarget.reset();
+        // let path = `search/${q}`;
+        // this.props.history.push(path);
     }
     
 
     render() {
-        //let query = this.props.match.params.query;
+
         return (
             <form className="search-form" onSubmit={this.hanleSubmit} >
                 <input type="search" 
