@@ -43,7 +43,8 @@ class App extends PureComponent {
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`)
         .then(response => {
           this.setState({
-            catPhotos: response.data.photos.photo
+            catPhotos: response.data.photos.photo,
+            loading: false
           })
         })
         .catch(error => {
@@ -57,7 +58,8 @@ class App extends PureComponent {
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`)
         .then(response => {
           this.setState({
-            dogPhotos: response.data.photos.photo
+            dogPhotos: response.data.photos.photo,
+            loading: false
           })
         })
         .catch(error => {
@@ -71,7 +73,8 @@ class App extends PureComponent {
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=birds&per_page=24&format=json&nojsoncallback=1`)
         .then(response => {
           this.setState({
-            birdPhotos: response.data.photos.photo
+            birdPhotos: response.data.photos.photo,
+            loading: false
           })
         })
         .catch(error => {

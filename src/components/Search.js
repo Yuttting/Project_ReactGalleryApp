@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import myApiKey from '../config';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 
 class Search extends PureComponent {
 
