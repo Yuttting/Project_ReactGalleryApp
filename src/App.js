@@ -18,17 +18,29 @@ class App extends PureComponent {
     }
 
   componentDidMount() {
-    this.getCatPhotos();
-    this.getDogPhotos();
-    this.getBirdPhotos();
-    this.performSearch(); 
+    Promise.all([
+      axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`),
+      axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`),
+      axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=birds&per_page=24&format=json&nojsoncallback=1`),
+      axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=parks&per_page=24&format=json&nojsoncallback=1`)
+    ])
+      .then(([data1, data2, data3,data4]) => this.setState({
+        catPhotos: data1.data.photos.photo,
+        dogPhotos: data2.data.photos.photo,
+        birdPhotos: data3.data.photos.photo,
+        photos: data4.data.photos.photo,
+        loading: false
+      }))
+      .catch(error => {
+        console.log('Error fetching and parsing data', error)
+      });
   }
 
   performSearch = (apiKey=myApiKey, query='parks') => {
     this.setState({
       loading: true
     });
-    
+
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
       .then(response => {
         this.setState({
@@ -41,42 +53,6 @@ class App extends PureComponent {
       });
   }
 
-  getCatPhotos = (apiKey=myApiKey) => {
-    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`)
-        .then(response => {
-          this.setState({
-            catPhotos: response.data.photos.photo,
-          })
-        })
-        .catch(error => {
-          console.log('Error fetching and parsing data', error)
-        });
-  }
-
-  getDogPhotos = (apiKey=myApiKey) => {
-    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`)
-        .then(response => {
-          this.setState({
-            dogPhotos: response.data.photos.photo,
-          })
-        })
-        .catch(error => {
-          console.log('Error fetching and parsing data', error)
-        });
-  }
-
-  getBirdPhotos = (apiKey=myApiKey) => {
-    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=birds&per_page=24&format=json&nojsoncallback=1`)
-        .then(response => {
-          this.setState({
-            birdPhotos: response.data.photos.photo,
-          })
-        })
-        .catch(error => {
-          console.log('Error fetching and parsing data', error)
-        });
-  }
-
   loading = (data) => {
     return (
       (this.state.loading)? <p>Loading...</p> :  <PhotoContainer data={data} />
@@ -85,7 +61,7 @@ class App extends PureComponent {
 
 
   render() {
-  
+  console.log(this.state.catPhotos)
     return (
         <BrowserRouter>
           <div className="container">
