@@ -9,7 +9,6 @@ import ErrorRoute from './components/ErrorRoute';
 
 
 class App extends PureComponent {
-
   state = {
       photos: [],
       loading: true,
@@ -19,10 +18,10 @@ class App extends PureComponent {
     }
 
   componentDidMount() {
-    this.performSearch(); 
     this.getCatPhotos();
     this.getDogPhotos();
     this.getBirdPhotos();
+    this.performSearch(); 
   }
 
   performSearch = (apiKey=myApiKey, query='parks') => {
@@ -39,48 +38,39 @@ class App extends PureComponent {
   }
 
   getCatPhotos = (apiKey=myApiKey) => {
-    let catPhotos;
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`)
         .then(response => {
           this.setState({
             catPhotos: response.data.photos.photo,
-            loading: false
           })
         })
         .catch(error => {
           console.log('Error fetching and parsing data', error)
         });
-        return catPhotos;
   }
 
   getDogPhotos = (apiKey=myApiKey) => {
-    let dogPhotos;
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`)
         .then(response => {
           this.setState({
             dogPhotos: response.data.photos.photo,
-            loading: false
           })
         })
         .catch(error => {
           console.log('Error fetching and parsing data', error)
         });
-        return dogPhotos;
   }
 
   getBirdPhotos = (apiKey=myApiKey) => {
-    let birdPhotos;
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=birds&per_page=24&format=json&nojsoncallback=1`)
         .then(response => {
           this.setState({
             birdPhotos: response.data.photos.photo,
-            loading: false
           })
         })
         .catch(error => {
           console.log('Error fetching and parsing data', error)
         });
-        return birdPhotos;
   }
 
   loading = (data) => {
@@ -89,25 +79,16 @@ class App extends PureComponent {
     )
   }
 
+
   render() {
-    console.log(this.state.catPhotos);
+  
     return (
         <BrowserRouter>
           <div className="container">
             <Search onSearch={this.performSearch}/>
             <Nav />
             <Switch>
-              <Route exact path='/' render={() => {
-                return (
-                    // (this.state.loading)? <p>Loading...</p> :  <PhotoContainer data={this.state.photos} />
-                    this.loading(this.state.photos)
-                )
-              }} />
-              {/* <Route path='/search' render={() => {
-                return (
-                    this.loading(this.state.photos)
-                )
-              }}/> */}
+              <Route exact path='/' render={() => this.loading(this.state.photos)} />
               <Route path='/search/:q' render={()=> this.loading(this.state.photos)} />
               <Route path='/cats' render={()=> this.loading(this.state.catPhotos)} />
               <Route path='/dogs' render={()=> this.loading(this.state.dogPhotos)} />

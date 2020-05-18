@@ -26,48 +26,4 @@ const PhotoContainer = props => {
     )
 }
 
-
-// class PhotoContainer extends PureComponent {
-//     state = {
-//         //results: [],
-//         photoDisplay: []
-//     }
-
-//     componentDidMount() {
-//         this.handlePhotoDisplay();
-//     }
-    
-//     handlePhotoDisplay = () => {
-//         console.log(this);
-//         console.log(this.props);
-//         if(this.props.results.length > 0) {
-//             this.setState({
-//                 photoDisplay: this.props.results.map(photo => 
-//                     <Photo 
-//                         url={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`}
-//                         key={photo.id} 
-//                         alt={photo.title}
-//                     />)
-//             })
-//         } else {
-//             this.setState({
-//                 photoDisplay: <NotFound />
-//             })
-//         }
-        
-//     }
-
-//     render() {
-//         console.log(this.props.results);
-//         return (
-//             <div className="photo-container">
-//                 <h2>Results</h2>
-//                 <ul>
-//                     {this.state.photoDisplay}
-//                 </ul>
-//             </div>
-//         )
-//     }
-// }
-
 export default PhotoContainer;
