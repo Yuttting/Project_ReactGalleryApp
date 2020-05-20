@@ -13,7 +13,6 @@ class Search extends PureComponent {
     }
 
     hanleSubmit = e => {
-        // console.log('ddd');
         let path = `/search/${this.query.value}`;
         this.props.history.push(path);
         this.props.onSearch(myApiKey, this.query.value);

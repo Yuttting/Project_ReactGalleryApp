@@ -62,7 +62,6 @@ class App extends PureComponent {
 
 
   render() {
-  //console.log(this.state.catPhotos)
     return (
         <BrowserRouter>
           <div className="container">
@@ -71,7 +70,6 @@ class App extends PureComponent {
             <Switch>
               <Route exact path='/' render={() => this.loading(this.state.photos)} />
               <Route path='/search/:query' render={() => (this.state.loading)? <p>Loading...</p> :  <SearchResults />} />
-              {/* <Route path='/search/:query' component={SearchResults} /> */}
               <Route path='/cats' render={()=> this.loading(this.state.catPhotos)} />
               <Route path='/dogs' render={()=> this.loading(this.state.dogPhotos)} />
               <Route path='/birds' render={()=> this.loading(this.state.birdPhotos)}/>
