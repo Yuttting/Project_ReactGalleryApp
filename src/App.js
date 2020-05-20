@@ -6,6 +6,7 @@ import Nav from './components/Nav';
 import myApiKey from './config';
 import PhotoContainer from './components/PhotoContainer';
 import ErrorRoute from './components/ErrorRoute';
+import SearchResults from './components/SearchResults';
 
 
 class App extends PureComponent {
@@ -61,15 +62,16 @@ class App extends PureComponent {
 
 
   render() {
-  console.log(this.state.catPhotos)
+  //console.log(this.state.catPhotos)
     return (
         <BrowserRouter>
           <div className="container">
-            <Search onSearch={this.performSearch}/>
+            <Search onSearch={this.performSearch} />
             <Nav />
             <Switch>
               <Route exact path='/' render={() => this.loading(this.state.photos)} />
-              <Route path='/search/:q' render={()=> this.loading(this.state.photos)} />
+              <Route path='/search/:query' render={(props)=> <SearchResults {...props} search={this.performSearch}/>} />
+              {/* <Route path='/search/:query' component={SearchResults} /> */}
               <Route path='/cats' render={()=> this.loading(this.state.catPhotos)} />
               <Route path='/dogs' render={()=> this.loading(this.state.dogPhotos)} />
               <Route path='/birds' render={()=> this.loading(this.state.birdPhotos)}/>
