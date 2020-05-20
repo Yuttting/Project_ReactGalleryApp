@@ -18,7 +18,7 @@ class Search extends PureComponent {
         this.props.history.push(path);
         this.props.onSearch(myApiKey, this.query.value);
         e.currentTarget.reset();
-        //e.preventDefault();
+        e.preventDefault();
     }
     
 

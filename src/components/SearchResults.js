@@ -1,9 +1,9 @@
-import React, { Component, useEffect } from 'react';
+import React, { PureComponent } from 'react';
 import myApiKey from '../config';
 import Photo from './Photo';
 import NotFound from './NotFound';
 import axios from 'axios';
-
+import { withRouter } from "react-router-dom";
 
 // const SearchResults = ({match}, props) => {
 //     let query = match.params.query;
@@ -44,48 +44,103 @@ import axios from 'axios';
 // }
 
 
-class SearchResults extends Component {
+class SearchResults extends PureComponent {
     state = {
-        query: this.props.match.params.query,
+        //query: this.props.match.params.query,
         results: [],
-        photos: []
+        photos: [],
+        //active: true
     }
     
-    componentDidMount() {
+    searchAndDisplay = (query) => {
+        // this.setState({
+        //     active: true
+        // })
+        Promise.all([
+            axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
+           ])
+             .then(([data]) => {this.setState({
+               results: data.data.photos.photo,
+               loading: false,
+               //active: false
+             });
+             if(this.state.results.length > 0) {
+               this.setState({
+                   photos: this.state.results.map( photo => 
+                       <Photo 
+                           url={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`}
+                           key={photo.id} 
+                           alt={photo.title}
+                       />
+                   )})
+            //    console.log(this.state.photos)
+               } else {
+                   this.setState({
+                   photos: <NotFound />
+               })
+               }    
+           }
+             )
+             .catch(error => {
+               console.log('Error fetching and parsing data', error)
+             });
+    }
+   
+
+    componentDidUpdate (prevProps, prevState) {
+        // console.log(prevProps.match.params.query)
+        // console.log(prevState);
+        // console.log(this.state.query)
+
+        if (prevProps.match.params.query !== this.props.match.params.query) {
+            this.searchAndDisplay(this.props.match.params.query)}
+            // this.setState({
+            //     active: false
+            // })
+    }    
+    
+    componentDidMount () {
+        this.searchAndDisplay(this.props.match.params.query)
+     }
+    // componentDidMount() {
         // this.setState({
         //     results: this.props.onSearch(myApiKey, this.state.query)
         // })
         // console.log(this.state.results)
-        Promise.all([
-         axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=${this.state.query}&per_page=24&format=json&nojsoncallback=1`)
-        ])
-          .then(([data]) => {this.setState({
-            results: data.data.photos.photo,
-            loading: false
-          });
-          if(this.state.results.length > 0) {
-            this.setState({
-                photos: this.state.results.map( photo => 
-                    <Photo 
-                        url={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`}
-                        key={photo.id} 
-                        alt={photo.title}
-                    />
-                )})
-            console.log(this.state.photos)
-            } else {
-                this.setState({
-                photos: <NotFound />
-            })
-            }    
-        }
-          )
-          .catch(error => {
-            console.log('Error fetching and parsing data', error)
-          });
-      }
 
-     
+    // componentWillReceiveProps(nextProps, prevProps) {
+    //     console.log(prevProps, nextProps);
+    //     let query = nextProps.match.params.query;
+    //     Promise.all([
+    //      axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${myApiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
+    //     ])
+    //       .then(([data]) => {this.setState({
+    //         results: data.data.photos.photo,
+    //         loading: false
+    //       });
+    //       if(this.state.results.length > 0) {
+    //         this.setState({
+    //             photos: this.state.results.map( photo => 
+    //                 <Photo 
+    //                     url={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`}
+    //                     key={photo.id} 
+    //                     alt={photo.title}
+    //                 />
+    //             )})
+    //         console.log(this.state.photos)
+    //         } else {
+    //             this.setState({
+    //             photos: <NotFound />
+    //         })
+    //         }    
+    //     }
+    //       )
+    //       .catch(error => {
+    //         console.log('Error fetching and parsing data', error)
+    //       });
+    //   }
+
+
     
     render() {
         //console.log(this.state.photos)
@@ -192,4 +247,4 @@ class SearchResults extends Component {
 //     }
 // }
 
-export default SearchResults;
+export default withRouter(SearchResults);

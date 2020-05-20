@@ -70,8 +70,8 @@ class App extends PureComponent {
             <Nav />
             <Switch>
               <Route exact path='/' render={() => this.loading(this.state.photos)} />
-              <Route path='/search/:query' render={(props)=> <SearchResults {...props} search={this.performSearch}/>} />
-              {/* <Route path='/search/:query' component={SearchResults} /> */}
+              {/* <Route path='/search/:query' render={(props)=> <SearchResults {...props}/>} /> */}
+              <Route path='/search/:query' component={SearchResults} />
               <Route path='/cats' render={()=> this.loading(this.state.catPhotos)} />
               <Route path='/dogs' render={()=> this.loading(this.state.dogPhotos)} />
               <Route path='/birds' render={()=> this.loading(this.state.birdPhotos)}/>
