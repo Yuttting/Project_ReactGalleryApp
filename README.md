@@ -1,6 +1,13 @@
 # Project_ReactGalleryApp
  Use the popular and in-demand React library to create an image gallery app. With the help of this powerful "MVC" (Model, View, Controller) library, the app will be built in the style of modern single page applications to keep it fast, modular, and in sync with current web development trends.
 
+Note:
+Apply for a non-commercial API key here: https://www.flickr.com/services/apps/create/apply/
+After downloading the project, You’ll need to set up a config.js file under src file so that you can request data from the Flickr API. 
+
+The config.js file should look something like this:
+const apiKey = 'YOUR API KEY';
+export default apiKey;
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
